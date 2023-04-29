@@ -1,5 +1,6 @@
 import { Client } from "discordx";
-import { IntentsBitField as Intents } from "discord.js";
+import { IntentsBitField as Intents, Interaction, Message } from "discord.js";
+import { dirname, importx } from "@discordx/importer";
 import { config as dotenv } from "dotenv";
 import { env } from "process";
 import "reflect-metadata";
@@ -21,6 +22,8 @@ const client = new Client({
   intents: [
     Intents.Flags.Guilds,
     Intents.Flags.GuildMessages,
+    Intents.Flags.GuildMessageReactions,
+    Intents.Flags.MessageContent
   ]
 });
 
@@ -29,4 +32,13 @@ client.on("ready", () => {
   client.initApplicationCommands();
 });
 
-client.login(env.LOGIN_TOKEN ?? "");
+client.on("interactionCreate", (interaction: Interaction) => {
+  client.executeInteraction(interaction);
+});
+
+client.on("messageCreate", (message: Message) => {
+  client.executeCommand(message);
+});
+
+importx(`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}`)
+  .then(() => client.login(env.LOGIN_TOKEN ?? ""));

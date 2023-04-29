@@ -1,7 +1,7 @@
-var _a;
 import { __awaiter } from "tslib";
 import { Client } from "discordx";
 import { IntentsBitField as Intents } from "discord.js";
+import { dirname, importx } from "@discordx/importer";
 import { config as dotenv } from "dotenv";
 import { env } from "process";
 import "reflect-metadata";
@@ -21,11 +21,19 @@ const client = new Client({
     intents: [
         Intents.Flags.Guilds,
         Intents.Flags.GuildMessages,
+        Intents.Flags.GuildMessageReactions,
+        Intents.Flags.MessageContent
     ]
 });
 client.on("ready", () => {
     console.log(`${BOT_NAME} started.`);
     client.initApplicationCommands();
 });
-console.log(env.LOGIN_TOKEN);
-client.login((_a = env.LOGIN_TOKEN) !== null && _a !== void 0 ? _a : "");
+client.on("interactionCreate", (interaction) => {
+    client.executeInteraction(interaction);
+});
+client.on("messageCreate", (message) => {
+    client.executeCommand(message);
+});
+importx(`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}`)
+    .then(() => { var _a; return client.login((_a = env.LOGIN_TOKEN) !== null && _a !== void 0 ? _a : ""); });

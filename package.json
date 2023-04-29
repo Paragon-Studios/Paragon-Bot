@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordx/importer": "^1.2.2",
     "discord.js": "^14.9.0",
     "discordx": "^11.7.6",
     "dotenv": "^16.0.3",
