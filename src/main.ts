@@ -1,12 +1,13 @@
 import { Client } from "discordx";
 import { IntentsBitField as Intents } from "discord.js";
 import { config as dotenv } from "dotenv";
-import config = require("../config.json");
+import { env } from "process";
 import "reflect-metadata";
+
+const BOT_NAME = "Paragon Bot"
 
 dotenv()
 const client = new Client({
-  silent: false,
   logger: console,
   simpleCommand: {
     argSplitter: " ",
@@ -24,8 +25,8 @@ const client = new Client({
 });
 
 client.on("ready", () => {
-  console.log(`${config.botName} started.`);
+  console.log(`${BOT_NAME} started.`);
   client.initApplicationCommands();
 });
 
-client.login(process.env.LOGIN_TOKEN ?? "");
+client.login(env.LOGIN_TOKEN ?? "");
