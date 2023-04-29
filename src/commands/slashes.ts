@@ -5,7 +5,7 @@ import { Discord, Slash } from "discordx";
 export class SlashCommands {
   @Slash({ 
     name: "ping",
-    description: "replies with pong"
+    description: "Replies with \"Pong!\" and the latency of the response."
   })
   public async ping(interaction: CommandInteraction): Promise<void> {
     const before = Date.now();
